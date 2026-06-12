@@ -1,0 +1,8 @@
+{
+  "name": "Remix: NATIVA Eco Jungle Residences",
+  "description": "Preventa de lotes y cabañas premium en la selva de Quintana Roo",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
