@@ -72,11 +72,6 @@ export default function App() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
 
-  // Calculator states
-  const [calcSize, setCalcSize] = useState(1000); // from 1,000 to 5,000 sqm
-  const [calcCabins, setCalcCabins] = useState(1); // 1 to 4 eco cabins
-  const [projectedYears, setProjectedYears] = useState(5);
-
   // Scroll detection for Navbar morphing
   useEffect(() => {
     const handleScroll = () => {
@@ -113,29 +108,6 @@ export default function App() {
     }, 5000);
     return () => clearInterval(timer);
   }, []);
-
-  // Premium interactive calculations
-  const pricePerSqm = 1250; // Usd equivalent per m2 for premium land
-  const baseLandValue = calcSize * pricePerSqm;
-  const cabinCost = 135000; // USD per luxury cabin
-  const totalInvestment = baseLandValue + (calcCabins * cabinCost);
-  
-  // Historical appreciation compound rate in luxury eco-reserves is ~15% annually
-  const annualAppreciationRate = 0.165; 
-  const futureLandValue = baseLandValue * Math.pow(1 + annualAppreciationRate, projectedYears);
-  
-  // Luxury vacation rentals yield ~ $280 USD average daily rate (ADR) in the region at 60% projection occupancy
-  const dailyRate = 280;
-  const annualOccupancy = 0.58;
-  const grossAnnualRentalRevenue = calcCabins * (dailyRate * 365 * annualOccupancy);
-  const netRentalYieldRate = 0.72; // 72% net profit margin after maintenance, local management, cleaning
-  const annualNetRentalIncome = grossAnnualRentalRevenue * netRentalYieldRate;
-  
-  // Total projected equity in X years (Land Value Appreciation + Accumulated Rental Net Profit)
-  const totalAppreciationProfit = futureLandValue - baseLandValue;
-  const totalRentalEarnings = annualNetRentalIncome * projectedYears;
-  const totalProjectedPortfolioValue = totalInvestment + totalAppreciationProfit + totalRentalEarnings;
-  const simpleROI = ((totalProjectedPortfolioValue - totalInvestment) / totalInvestment) * 100;
 
   // Handle lead submission
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -1089,215 +1061,63 @@ export default function App() {
         </AnimatePresence>
       </section>
 
-      {/* 5. VISIÓN DE INVERSIÓN & CALCULATOR SMART WIDGET */}
+      {/* 5. VISIÓN DE INVERSIÓN */}
       <section id="inversion" className="py-24 md:py-32 bg-bone relative overflow-hidden">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-12">
+        <div className="max-w-3xl mx-auto px-6">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-            
-            {/* Description & Business model */}
-            <div className="lg:col-span-5">
-              <span className="text-clay text-xs uppercase tracking-[0.25em] font-bold block mb-4">{t.invTag}</span>
-              <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl tracking-tight text-forest mb-8 leading-[1.1]">
-                {language === "en" ? <>Opportunity for <br /><span className="italic text-clay font-normal">Smart Legacy</span></> : <>Oportunidad para <br /><span className="italic text-clay font-normal">Patrimonio Inteligente</span></>}
-              </h2>
+          {/* Description & Business model */}
+          <div className="text-left">
+            <span className="text-clay text-xs uppercase tracking-[0.25em] font-bold block mb-4">{t.invTag}</span>
+            <h2 className="font-serif text-3xl md:text-5xl lg:text-5xl tracking-tight text-forest mb-8 leading-[1.1]">
+              {language === "en" ? <>Opportunity for <br /><span className="italic text-clay font-normal">Smart Legacy</span></> : <>Oportunidad para <br /><span className="italic text-clay font-normal">Patrimonio Inteligente</span></>}
+            </h2>
 
-              <p className="font-sans text-sm md:text-base text-offblack/70 mb-8 font-light leading-relaxed">
-                {t.invDesc}
-              </p>
+            <p className="font-sans text-sm md:text-base text-offblack/70 mb-10 font-light leading-relaxed">
+              {t.invDesc}
+            </p>
 
-              {/* Pillars list */}
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="bg-[#F8F7F2] p-2 rounded-none text-forest font-bold font-serif text-sm border border-forest/5">01</div>
-                  <div>
-                    <h4 className="font-serif text-lg text-forest font-semibold">{t.p1Title}</h4>
-                    <p className="font-sans text-xs text-offblack/60 mt-1 leading-relaxed">
-                      {t.p1Desc}
-                    </p>
-                  </div>
+            {/* Pillars list */}
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="bg-[#F8F7F2] p-2 rounded-none text-forest font-bold font-serif text-sm border border-forest/5">01</div>
+                <div>
+                  <h4 className="font-serif text-lg text-forest font-semibold">{t.p1Title}</h4>
+                  <p className="font-sans text-xs text-offblack/60 mt-1 leading-relaxed">
+                    {t.p1Desc}
+                  </p>
                 </div>
+              </div>
 
-                 <div className="flex items-start gap-4">
-                  <div className="bg-[#F8F7F2] p-2 rounded-none text-forest font-bold font-serif text-sm border border-forest/5">02</div>
-                  <div>
-                    <h4 className="font-serif text-lg text-forest font-semibold">{t.p2Title}</h4>
-                    <p className="font-sans text-xs text-offblack/60 mt-1 leading-relaxed">
-                      {t.p2Desc}
-                    </p>
-                  </div>
+              <div className="flex items-start gap-4">
+                <div className="bg-[#F8F7F2] p-2 rounded-none text-forest font-bold font-serif text-sm border border-forest/5">02</div>
+                <div>
+                  <h4 className="font-serif text-lg text-forest font-semibold">{t.p2Title}</h4>
+                  <p className="font-sans text-xs text-offblack/60 mt-1 leading-relaxed">
+                    {t.p2Desc}
+                  </p>
                 </div>
+              </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="bg-[#F8F7F2] p-2 rounded-none text-forest font-bold font-serif text-sm border border-forest/5">03</div>
-                  <div>
-                    <h4 className="font-serif text-lg text-forest font-semibold">{t.p3Title}</h4>
-                    <p className="font-sans text-xs text-offblack/60 mt-1 leading-relaxed">
-                      {t.p3Desc}
-                    </p>
-                  </div>
+              <div className="flex items-start gap-4">
+                <div className="bg-[#F8F7F2] p-2 rounded-none text-forest font-bold font-serif text-sm border border-forest/5">03</div>
+                <div>
+                  <h4 className="font-serif text-lg text-forest font-semibold">{t.p3Title}</h4>
+                  <p className="font-sans text-xs text-offblack/60 mt-1 leading-relaxed">
+                    {t.p3Desc}
+                  </p>
                 </div>
+              </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="bg-[#F8F7F2] p-2 rounded-none text-forest font-bold font-serif text-sm border border-forest/5">04</div>
-                  <div>
-                    <h4 className="font-serif text-lg text-forest font-semibold">{t.p4Title}</h4>
-                    <p className="font-sans text-xs text-offblack/60 mt-1 leading-relaxed">
-                      {t.p4Desc}
-                    </p>
-                  </div>
+              <div className="flex items-start gap-4">
+                <div className="bg-[#F8F7F2] p-2 rounded-none text-forest font-bold font-serif text-sm border border-forest/5">04</div>
+                <div>
+                  <h4 className="font-serif text-lg text-forest font-semibold">{t.p4Title}</h4>
+                  <p className="font-sans text-xs text-offblack/60 mt-1 leading-relaxed">
+                    {t.p4Desc}
+                  </p>
                 </div>
               </div>
             </div>
-
-            {/* Smart Appreciation Calculator Widget */}
-            <div className="lg:col-span-7 bg-white p-8 md:p-12 rounded-none border border-forest/10 shadow-sm">
-              <div className="border-b border-forest/10 pb-6 mb-8 flex justify-between items-start">
-                <div>
-                  <div className="flex items-center gap-2 text-clay mb-2">
-                    <TrendingUp className="w-4 h-4" />
-                    <span className="text-[10px] uppercase font-bold tracking-widest">{t.calcTitleTag}</span>
-                  </div>
-                  <h3 className="font-serif text-2xl text-forest font-semibold">{t.calcHeading}</h3>
-                </div>
-                <span className="bg-forest/5 text-forest text-[10px] uppercase tracking-widest p-2 rounded-sm font-semibold">
-                  {t.calcModel}
-                </span>
-              </div>
-
-              <div className="space-y-8">
-                {/* Meter dimensioning */}
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs font-sans text-offblack/70 uppercase tracking-widest font-semibold flex items-center gap-1.5">
-                      <Layout className="w-3.5 h-3.5 text-clay" />
-                      {t.calcPropertyArea}
-                    </span>
-                    <strong className="text-emerald text-base font-serif font-bold text-forest">{calcSize.toLocaleString()} m²</strong>
-                  </div>
-                  <input 
-                    type="range" 
-                    min="1000" 
-                    max="5000" 
-                    step="500" 
-                    value={calcSize}
-                    onChange={(e) => setCalcSize(Number(e.target.value))}
-                    className="w-full accent-gold h-2 bg-bone rounded-none cursor-pointer"
-                  />
-                  <div className="flex justify-between text-[10px] text-offblack/40 mt-1">
-                    <span>{t.calcBaseTag}</span>
-                    <span>{t.calcPremiumTag}</span>
-                  </div>
-                </div>
-
-                {/* Cabins dimensioning */}
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs font-sans text-offblack/70 uppercase tracking-widest font-semibold flex items-center gap-1.5">
-                      <Home className="w-3.5 h-3.5 text-clay" />
-                      {t.calcCabinsCount}
-                    </span>
-                    <strong className="text-emerald text-base font-serif font-bold text-forest">{calcCabins} {t.calcCabinsUnits}</strong>
-                  </div>
-                  <input 
-                    type="range" 
-                    min="0" 
-                    max="4" 
-                    step="1" 
-                    value={calcCabins}
-                    onChange={(e) => setCalcCabins(Number(e.target.value))}
-                    className="w-full accent-gold h-2 bg-bone rounded-none cursor-pointer"
-                  />
-                  <div className="flex justify-between text-[10px] text-offblack/40 mt-1">
-                    <span>{t.calcNoCabins}</span>
-                    <span>{t.calcVIPCabins}</span>
-                  </div>
-                </div>
-
-                {/* Horizon projected */}
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs font-sans text-offblack/70 uppercase tracking-widest font-semibold flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-clay" />
-                      {t.calcHorizon}
-                    </span>
-                    <strong className="text-emerald text-base font-serif font-bold text-forest">{projectedYears} {t.calcYears}</strong>
-                  </div>
-                  <input 
-                    type="range" 
-                    min="3" 
-                    max="10" 
-                    step="1" 
-                    value={projectedYears}
-                    onChange={(e) => setProjectedYears(Number(e.target.value))}
-                    className="w-full accent-gold h-2 bg-bone rounded-none cursor-pointer"
-                  />
-                  <div className="flex justify-between text-[10px] text-offblack/40 mt-1">
-                    <span>{t.calcHorizon3}</span>
-                    <span>{t.calcHorizon10}</span>
-                  </div>
-                </div>
-
-                {/* Quick results dashboard */}
-                <div className="bg-forest p-6 rounded-none text-white grid grid-cols-1 md:grid-cols-2 gap-6 relative overflow-hidden mt-6 border border-white/10">
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <span className="text-[10px] uppercase text-sand/80 tracking-wider block">{t.calcEstTotal}</span>
-                      <strong className="text-white text-2xl font-serif font-bold block">${totalInvestment.toLocaleString()} USD</strong>
-                      <span className="text-[9px] text-white/50">{t.calcTerrenoCabin} (${baseLandValue.toLocaleString()}) + {t.calcCabinsLabel}</span>
-                    </div>
-
-                    {calcCabins > 0 && (
-                      <div>
-                        <span className="text-[10px] uppercase text-sand/80 tracking-wider block">{t.calcAnnualRental}</span>
-                        <strong className="text-gold text-xl font-serif font-semibold block">${Math.round(annualNetRentalIncome).toLocaleString()} USD / {t.calcYears.slice(0, 3)}</strong>
-                        <span className="text-[9px] text-white/50">{t.calcRentalOcup}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-6 space-y-4">
-                    <div>
-                      <span className="text-[10px] uppercase text-sand/80 tracking-wider block">
-                        {t.calcAppLabel} {projectedYears} {t.calcYears.toLowerCase()}
-                      </span>
-                      <strong className="text-white text-2xl font-serif font-bold block">${Math.round(futureLandValue).toLocaleString()} USD</strong>
-                      <span className="text-[9px] text-emerald-400 font-medium">{t.calcAppSub}</span>
-                    </div>
-
-                    <div>
-                      <span className="text-[10px] uppercase text-sand/80 tracking-wider block">{t.calcPortfolioLabel}</span>
-                      <strong className="text-gold text-2xl font-serif font-bold block">${Math.round(totalProjectedPortfolioValue).toLocaleString()} USD*</strong>
-                      <span className="text-[10px] text-sand font-medium block">{t.calcROI} {simpleROI.toFixed(1)}%</span>
-                    </div>
-                  </div>
-
-                </div>
-
-                <div className="text-[10px] text-offblack/50 italic leading-relaxed">
-                  {t.calcDisclaimer}
-                </div>
-
-                <button 
-                  onClick={() => {
-                    const el = document.getElementById("contacto");
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
-                    setFormData(prev => ({
-                      ...prev,
-                      comments: language === "en" 
-                        ? `Interested in reserving a ${calcSize} sqm parcel with ${calcCabins} cabins simulated for a ${projectedYears}-year horizon.`
-                        : `Interesado en apartar terreno de ${calcSize}m² con ${calcCabins} cabañas de la simulación a plazo de ${projectedYears} años.`
-                    }));
-                  }}
-                  className="w-full bg-gold text-forest py-4 rounded-sm font-sans uppercase tracking-[0.2em] text-xs font-bold hover:bg-[#c29e2f] transition-all"
-                >
-                  {t.calcCta}
-                </button>
-
-              </div>
-            </div>
-
           </div>
 
         </div>
