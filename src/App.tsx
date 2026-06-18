@@ -730,7 +730,7 @@ export default function App() {
                 {/* Plan map container */}
                 <div className="relative overflow-hidden bg-[#e9e7e2]/50 aspect-video rounded-none border border-forest/10 flex items-center justify-center">
                   <img 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7fgjMTzeyXGa7zNAfuu1XkVy8FAI83HK0n3FNQa9CmwkgwBld5K41skI-p4rZz_ygOnNwPeDNp7KI5lggQutImxfDM8OmE_CoW1SUHvMdV1RVQl1doU_E1G8JLig1BGt6POSmzwCLZQHIDocf3dwBzMZhEvnmmDy5zIQQdtbp2LtZzTPt0N6X7tA0cjSazGkBJgFcmGhp3lQxGcVvKjLiDpmUx57TMRCBjZgg7IPWAWRzGQGRvowPiuH681WMLBq1axCZvDJ6tjkw" 
+                    src="https://i.imgur.com/B0Iuzwc.jpeg" 
                     alt="Plano general de terrenos Nativa en cancun" 
                     className="max-w-full max-h-full object-contain filter saturate-75 contrast-105" 
                     referrerPolicy="no-referrer"

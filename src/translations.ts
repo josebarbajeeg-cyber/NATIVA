@@ -14,7 +14,7 @@ export const getAmenitiesList = (lang: "en" | "es"): Amenity[] => [
     id: "clubhouse",
     name: "Clubhouse",
     category: lang === "en" ? "Social" : "Social",
-    image: "/src/assets/images/luxury_social_clubhouse_1781074762788.png",
+    image: "https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?auto=format&fit=crop&w=1200&q=80",
     description: lang === "en"
       ? "The low-density social centerpiece. Sustainable architecture blending precious woods, rustic teak, and palapa thatched roofs with a modern double-height design. Features a library, tasting lounge, organic farm-to-table restaurant, and shaded corners aligned to catch the breeze."
       : "El epicentro social de baja densidad. Arquitectura sustentable que fusiona maderas preciosas, teca rústica y techos de palapa con un diseño moderno de doble altura. Ofrece biblioteca, lounge de degustación, restaurante orgánico de granja a la mesa y rincones sombreados orientados hacia la brisa."
