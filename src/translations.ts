@@ -216,8 +216,8 @@ export const getTranslations = (lang: "en" | "es") => {
     amenTitle: lang === "en" ? "Amenities Crafted for Your Tranquility and Harmony with the Environment" : "Amenidades Creadas Para Su Tranquilidad y Armonía del Entorno",
     amenTitleItalic: lang === "en" ? "Tranquility and Harmony with the Environment" : "Tranquilidad y Armonía del Entorno",
     amenDesc: lang === "en"
-      ? "Discover the spectacular assets crafted to elevate your daily life. A balanced fusion of high-end sports structures, pristine freshwater healing reserves, and organic social spaces."
-      : "Descubra las extraordinarias instalaciones diseñadas para complementar tu estilo de vida. Un conjunto balanceado de instalaciones deportivas, santuarios curativos de agua dulce y espacios de congregación social selectos.",
+      ? "Our project will feature extraordinary installations designed to complement your lifestyle. A balanced fusion of high-end sports structures, pristine freshwater healing reserves, and organic social spaces."
+      : "Nuestro proyecto contará con extraordinarias instalaciones diseñadas para complementar tu estilo de vida. Un conjunto balanceado de instalaciones deportivas, santuarios curativos de agua dulce y espacios de congregación social selectos.",
     amenMinorCampfire: lang === "en" ? "Campfire Trails" : "Área de Fogatas",
     amenMinorTennis: lang === "en" ? "Tennis Court" : "Cancha de Tenis",
     amenMinorSports: lang === "en" ? "Sports Courts" : "Canchas Deportivas",
@@ -246,8 +246,8 @@ export const getTranslations = (lang: "en" | "es") => {
     
     p1Title: lang === "en" ? "Initial Pre-Sale Phase" : "Adquisición Pre-Venta Inicial",
     p1Desc: lang === "en"
-      ? "Secure premium terrain starting from 1,000 sqm with the absolute lowest introductory price points, locking in substantial appreciation margins from day one."
-      : "Adquiera terrenos premium desde 1,000 m² con los precios base más bajos del mercado, asegurando un margen sustancial de plusvalía desde la fase de urbanización.",
+      ? "Secure terrain starting from 1,000 sqm with the absolute lowest introductory price points, locking in substantial appreciation margins from day one."
+      : "Adquiera terrenos desde 1,000 m² con los precios base más bajos del mercado, asegurando un margen sustancial de plusvalía desde la fase de urbanización.",
     
     p2Title: lang === "en" ? "Sustained Modular Cabin layouts" : "Construcción Modular Eco",
     p2Desc: lang === "en"
