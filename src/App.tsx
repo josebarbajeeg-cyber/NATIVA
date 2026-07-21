@@ -24,7 +24,10 @@ import {
   Menu,
   X,
   Plus,
-  Clock
+  Clock,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw
 } from "lucide-react";
 import { getTranslations, getAmenitiesList, Amenity } from "./translations";
 
@@ -38,7 +41,24 @@ interface Testimonial {
 const heroSlides = [
   "https://i.imgur.com/fZjr6S2.jpeg",
   "https://i.imgur.com/mFx4cQc.jpeg",
-  "https://i.imgur.com/G7KVVfg.jpeg"
+  "https://i.imgur.com/aA1ad2v.jpeg"
+];
+
+const galleryImages = [
+  "https://i.imgur.com/MTJwloH.jpeg",
+  "https://i.imgur.com/ylJPuae.jpeg",
+  "https://i.imgur.com/bhyNoyB.jpeg",
+  "https://i.imgur.com/qcg2NDz.jpeg",
+  "https://i.imgur.com/MOVPkNG.jpeg",
+  "https://i.imgur.com/Z4zIPEk.jpeg",
+  "https://i.imgur.com/vH0F8lB.jpeg",
+  "https://i.imgur.com/mOIjwiR.jpeg",
+  "https://i.imgur.com/zioLlt2.jpeg",
+  "https://i.imgur.com/PHGDj0Z.jpeg",
+  "https://i.imgur.com/bGK4ggG.jpeg",
+  "https://i.imgur.com/aA1ad2v.jpeg",
+  "https://i.imgur.com/0lIoz95.jpeg",
+  "https://i.imgur.com/qvLTf61.jpeg"
 ];
 
 export default function App() {
@@ -58,7 +78,10 @@ export default function App() {
   const [investmentType, setInvestmentType] = useState<"terreno" | "cabana">("terreno");
   const [preSaleModalOpen, setPreSaleModalOpen] = useState(false);
   const [mapLightboxOpen, setMapLightboxOpen] = useState(false);
+  const [galleryLightboxImg, setGalleryLightboxImg] = useState<string | null>(null);
   const [zoomScale, setZoomScale] = useState(1);
+  const [planCardZoom, setPlanCardZoom] = useState(1);
+  const [mapModalData, setMapModalData] = useState<{ src: string; title: string; sub: string } | null>(null);
 
   // Form states
   const [formData, setFormData] = useState({
@@ -542,7 +565,7 @@ export default function App() {
                     {language === "en" ? "Official Presentation Video" : "Video Presentación Oficial"}
                   </span>
                   <h3 className="font-serif text-lg md:text-xl font-medium tracking-wide text-white">
-                    {language === "en" ? "Experience NATIVA Jungle Wellness" : "Experimente NATIVA Bienestar en la Selva"}
+                    {language === "en" ? "Experience NATIVA Jungle Wellness" : "Experimente NATIVA Plenitud en la Selva"}
                   </h3>
                 </div>
                 <div className="flex items-center gap-2 bg-black/30 border border-white/15 px-3 py-1 text-[10px] font-mono tracking-widest text-gold uppercase rounded-none">
@@ -557,7 +580,7 @@ export default function App() {
               <div className="relative aspect-video bg-black/40 overflow-hidden border border-white/5">
                 {language === "en" ? (
                   <iframe
-                    src="https://www.youtube.com/embed/BSjIZ_FIx2Y?si=pFWBaUXZrRZMXmsq"
+                    src="https://www.youtube.com/embed/1Ifzgl8obMQ?si=D2-SZUzMS73UHefv"
                     title="YouTube video player"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -567,7 +590,7 @@ export default function App() {
                   />
                 ) : (
                   <iframe
-                    src="https://www.youtube.com/embed/JLo-tqGsHn4?si=MGWywfFaCTIy3EfX"
+                    src="https://www.youtube.com/embed/zR9bQwdRzY4?si=mSDuCSifx7ubOn-K"
                     title="YouTube video player"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -718,37 +741,114 @@ export default function App() {
               {/* Primary Master Plan Card */}
               <div className="relative bg-white p-5 rounded-none border border-forest/10 group flex flex-col justify-between shadow-sm">
                 
-                {/* Title */}
-                <div className="flex justify-between items-center mb-4 px-2">
-                  <span className="font-serif text-sm text-forest font-semibold tracking-wider text-xs">{t.mpGeneralPlan}</span>
-                  <div className="flex items-center gap-2 text-xs font-sans text-clay">
+                {/* Title & Controls */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 px-2 gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-serif text-sm text-forest font-semibold tracking-wider text-xs">{t.mpGeneralPlan}</span>
                     <span className="w-2.5 h-2.5 rounded-full bg-gold animate-pulse" />
-                    <span>{t.mpPreSaleAvailable}</span>
+                    <span className="text-[11px] font-sans text-clay font-medium">{t.mpPreSaleAvailable}</span>
+                  </div>
+
+                  {/* Inline Zoom Controls & Fullscreen Zoom Button */}
+                  <div className="flex items-center gap-2 text-xs font-sans text-clay">
+                    <div className="flex items-center gap-1 bg-forest/5 border border-forest/15 px-2 py-1 text-[11px] select-none">
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPlanCardZoom(prev => Math.max(1, prev - 0.25));
+                        }}
+                        className="p-1 hover:text-forest transition-colors font-bold disabled:opacity-30 cursor-pointer"
+                        title={language === "en" ? "Zoom Out" : "Alejar Zoom"}
+                        disabled={planCardZoom <= 1}
+                      >
+                        <ZoomOut className="w-3.5 h-3.5" />
+                      </button>
+                      <span className="font-mono text-[10px] px-1 font-bold text-forest min-w-[36px] text-center">
+                        {Math.round(planCardZoom * 100)}%
+                      </span>
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPlanCardZoom(prev => Math.min(2.5, prev + 0.25));
+                        }}
+                        className="p-1 hover:text-forest transition-colors font-bold disabled:opacity-30 cursor-pointer"
+                        title={language === "en" ? "Zoom In" : "Acercar Zoom"}
+                        disabled={planCardZoom >= 2.5}
+                      >
+                        <ZoomIn className="w-3.5 h-3.5" />
+                      </button>
+                      {planCardZoom > 1 && (
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPlanCardZoom(1);
+                          }}
+                          className="p-1 text-gold hover:text-forest transition-colors ml-1 border-l border-forest/15 pl-1.5 cursor-pointer"
+                          title={language === "en" ? "Reset Zoom" : "Restablecer Zoom"}
+                        >
+                          <RotateCcw className="w-3 h-3" />
+                        </button>
+                      )}
+                    </div>
+
+                    <button 
+                      onClick={() => {
+                        setZoomScale(1.5);
+                        setMapModalData({
+                          src: "https://i.imgur.com/iljWVRt.jpeg",
+                          title: t.mpGeneralPlan,
+                          sub: language === "en" ? "Interactive High-Resolution General Layout & Lot Distribution" : "Plano General Interactivo y Distribución de Lotes en Alta Resolución"
+                        });
+                      }}
+                      className="flex items-center gap-1.5 bg-forest text-gold px-3 py-1 text-[10px] uppercase font-bold tracking-wider hover:bg-gold hover:text-forest transition-all cursor-pointer shadow-sm"
+                    >
+                      <Maximize2 className="w-3 h-3" />
+                      <span>{language === "en" ? "Fullscreen Zoom" : "Pantalla Completa"}</span>
+                    </button>
                   </div>
                 </div>
 
                 {/* Plan map container */}
-                <div className="relative overflow-hidden bg-[#e9e7e2]/50 aspect-video rounded-none border border-forest/10 flex items-center justify-center">
-                  <img 
-                    src="https://i.imgur.com/B0Iuzwc.jpeg" 
-                    alt="Plano general de terrenos Nativa en cancun" 
-                    className="max-w-full max-h-full object-contain filter saturate-75 contrast-105" 
-                    referrerPolicy="no-referrer"
-                  />
-                  
+                <div 
+                  className="relative overflow-hidden bg-[#e9e7e2]/50 aspect-video rounded-none border border-forest/10 flex items-center justify-center cursor-pointer group select-none"
+                  onClick={() => {
+                    setZoomScale(1.5);
+                    setMapModalData({
+                      src: "https://i.imgur.com/iljWVRt.jpeg",
+                      title: t.mpGeneralPlan,
+                      sub: language === "en" ? "Interactive High-Resolution General Layout & Lot Distribution" : "Plano General Interactivo y Distribución de Lotes en Alta Resolución"
+                    });
+                  }}
+                >
+                  <div className="w-full h-full overflow-auto custom-scrollbar flex items-center justify-center">
+                    <img 
+                      src="https://i.imgur.com/iljWVRt.jpeg" 
+                      alt="Plano general de terrenos Nativa en cancun" 
+                      className="max-w-full max-h-full object-contain filter saturate-85 contrast-105 transition-transform duration-300 ease-out" 
+                      style={{ transform: `scale(${planCardZoom})`, transformOrigin: "center center" }}
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+
+                  {/* Interactive Zoom prompt badge overlay */}
+                  <div className="absolute top-3 right-3 bg-forest/90 text-gold backdrop-blur-sm px-2.5 py-1 border border-gold/30 text-[10px] font-mono tracking-widest uppercase flex items-center gap-1.5 shadow-md group-hover:scale-105 transition-transform pointer-events-none">
+                    <ZoomIn className="w-3.5 h-3.5 text-gold" />
+                    <span>{language === "en" ? "Click for Zoom Lightbox" : "Haz clic para hacer Zoom"}</span>
+                  </div>
+
                   {/* Subtle water-drop pinpoint overlay highlighting CENOTES or clubhouse on the blueprint image */}
-                  <div className="absolute top-[35%] left-[26%] -translate-x-1/2 -translate-y-1/2 group">
+                  <div className="absolute top-[35%] left-[26%] -translate-x-1/2 -translate-y-1/2 group/pin">
                     <span className="absolute inline-flex h-6 w-6 rounded-full bg-gold/30 animate-ping" />
                     <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-gold border border-white" />
-                    <div className="absolute hidden group-hover:block bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 bg-forest text-white text-[10px] p-2 rounded-sm shadow-md tracking-wider uppercase font-semibold text-center leading-none">
+                    <div className="absolute hidden group-hover/pin:block bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 bg-forest text-white text-[10px] p-2 rounded-sm shadow-md tracking-wider uppercase font-semibold text-center leading-none z-10">
                       {t.mpPoolCenote}
                     </div>
                   </div>
 
-                  <div className="absolute top-[60%] left-[50%] -translate-x-1/2 -translate-y-1/2 group">
+                  <div className="absolute top-[60%] left-[50%] -translate-x-1/2 -translate-y-1/2 group/pin">
                     <span className="absolute inline-flex h-6 w-6 rounded-full bg-gold/30 animate-ping" />
                     <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-gold border border-white" />
-                    <div className="absolute hidden group-hover:block bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 bg-forest text-white text-[10px] p-2 rounded-sm shadow-md tracking-wider uppercase font-semibold text-center leading-none">
+                    <div className="absolute hidden group-hover/pin:block bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 bg-forest text-white text-[10px] p-2 rounded-sm shadow-md tracking-wider uppercase font-semibold text-center leading-none z-10">
                       {t.mpEcoLotsPremium}
                     </div>
                   </div>
@@ -781,7 +881,11 @@ export default function App() {
                 <div 
                   onClick={() => {
                     setZoomScale(1);
-                    setMapLightboxOpen(true);
+                    setMapModalData({
+                      src: "https://i.imgur.com/C320mbH.jpeg",
+                      title: t.mapLightboxTitle,
+                      sub: t.mapLightboxSub
+                    });
                   }}
                   className="relative overflow-hidden bg-forest/5 aspect-video rounded-none border border-forest/15 cursor-pointer group"
                 >
@@ -816,6 +920,50 @@ export default function App() {
                 {/* Footnote */}
                 <div className="mt-4 px-2 flex justify-between items-center text-[11px] font-sans text-offblack/60 pt-2 border-t border-forest/10 font-light">
                   <span>{t.mpSatCaption}</span>
+                  <a href="#contacto" className="text-clay hover:text-forest transition-all flex items-center gap-1 font-semibold">
+                    <span>{t.mpAccessCoords}</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+
+              </div>
+
+              {/* Tiempos de Traslado a Puntos Clave Card */}
+              <div className="relative bg-white p-5 rounded-none border border-forest/10 group flex flex-col justify-between shadow-sm">
+                
+                {/* Title */}
+                <div className="flex justify-between items-center mb-4 px-2">
+                  <span className="font-serif text-sm text-forest font-semibold tracking-wider text-xs uppercase">
+                    {language === "en" ? "Travel Times to Key Destinations" : "Tiempos de Traslado a Puntos Clave"}
+                  </span>
+                  <div className="flex items-center gap-2 text-xs font-sans text-clay">
+                    <Clock className="w-3.5 h-3.5 text-gold" />
+                    <span>{language === "en" ? "Connectivity" : "Conectividad"}</span>
+                  </div>
+                </div>
+
+                {/* Travel Times Image Container */}
+                <div 
+                  onClick={() => setGalleryLightboxImg("https://i.imgur.com/n7o3Fs9.jpeg")}
+                  className="relative overflow-hidden bg-forest/5 rounded-none border border-forest/15 cursor-pointer group"
+                >
+                  <img 
+                    src="https://i.imgur.com/n7o3Fs9.jpeg" 
+                    alt={language === "en" ? "Travel times to key destinations" : "Tiempos de traslado a puntos clave"} 
+                    className="w-full h-auto object-contain group-hover:scale-[1.02] transition-transform duration-500" 
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="bg-forest/90 text-gold text-xs px-3 py-1.5 font-bold uppercase tracking-widest flex items-center gap-2 border border-gold/30">
+                      <Maximize2 className="w-4 h-4" />
+                      <span>{language === "en" ? "Expand Image" : "Ampliar Imagen"}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footnote */}
+                <div className="mt-4 px-2 flex justify-between items-center text-[11px] font-sans text-offblack/60 pt-2 border-t border-forest/10 font-light">
+                  <span>{language === "en" ? "Distances & estimated travel times from NATIVA" : "Distancias y tiempos estimados desde NATIVA"}</span>
                   <a href="#contacto" className="text-clay hover:text-forest transition-all flex items-center gap-1 font-semibold">
                     <span>{t.mpAccessCoords}</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -912,6 +1060,51 @@ export default function App() {
             </div>
           </div>
 
+          {/* Galería de Fotos del Proyecto y Amenidades */}
+          <div className="mt-20 pt-12 border-t border-white/10">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+              <div>
+                <span className="text-gold text-xs uppercase tracking-[0.25em] font-bold block mb-2">
+                  {language === "en" ? "Visual Experience" : "Experiencia Visual"}
+                </span>
+                <h3 className="font-serif text-3xl md:text-4xl text-white font-medium">
+                  {language === "en" ? "Project & Amenities Gallery" : "Galería del Proyecto y Amenidades"}
+                </h3>
+              </div>
+              <p className="font-sans text-xs text-white/60 max-w-md font-light">
+                {language === "en" 
+                  ? "Explore real captures of the wild landscape, natural pools, architectural concepts, and serene spaces at NATIVA."
+                  : "Explore capturas reales del entorno selvático, cuevas naturales, conceptos arquitectónicos y rincones de serenidad en NATIVA."}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+              {galleryImages.map((imgUrl, idx) => (
+                <motion.div
+                  key={idx}
+                  className="relative aspect-square overflow-hidden bg-white/5 border border-white/10 group cursor-pointer"
+                  onClick={() => setGalleryLightboxImg(imgUrl)}
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <img 
+                    src={imgUrl} 
+                    alt={`Galería Nativa ${idx + 1}`} 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 filter saturate-[0.9] group-hover:saturate-[1.1]"
+                    referrerPolicy="no-referrer"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-2">
+                    <span className="text-[9px] text-gold font-mono uppercase tracking-widest font-semibold">
+                      #{idx + 1}
+                    </span>
+                    <Maximize2 className="w-3.5 h-3.5 text-white" />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
         </div>
 
         {/* Amenity Detail Immersive Modal */}
@@ -979,24 +1172,38 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Satellite Map High-Resolution Lightbox */}
+        {/* Satellite Map & Plano General High-Resolution Interactive Lightbox Modal */}
         <AnimatePresence>
-          {mapLightboxOpen && (
+          {(mapLightboxOpen || mapModalData) && (
             <motion.div 
               className="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 bg-black/95 backdrop-blur-md"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              onClick={() => {
+                setMapLightboxOpen(false);
+                setMapModalData(null);
+              }}
             >
               {/* Modal Header */}
-              <div className="w-full max-w-6xl flex justify-between items-center mb-4 px-4 text-white">
+              <div 
+                className="w-full max-w-6xl flex justify-between items-center mb-4 px-4 text-white"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <div>
-                  <h3 className="font-serif text-xl md:text-2xl font-semibold tracking-wide text-gold">{t.mapLightboxTitle}</h3>
-                  <p className="font-sans text-xs text-neutral-400">{t.mapLightboxSub}</p>
+                  <h3 className="font-serif text-xl md:text-2xl font-semibold tracking-wide text-gold">
+                    {mapModalData?.title || t.mapLightboxTitle}
+                  </h3>
+                  <p className="font-sans text-xs text-neutral-400">
+                    {mapModalData?.sub || t.mapLightboxSub}
+                  </p>
                 </div>
                 <button 
-                   onClick={() => setMapLightboxOpen(false)}
-                  className="bg-white/10 hover:bg-gold hover:text-forest text-white p-3 rounded-full transition-all border border-white/10 flex items-center justify-center shadow-lg cursor-pointer animate-none"
+                  onClick={() => {
+                    setMapLightboxOpen(false);
+                    setMapModalData(null);
+                  }}
+                  className="bg-white/10 hover:bg-gold hover:text-forest text-white p-3 rounded-full transition-all border border-white/10 flex items-center justify-center shadow-lg cursor-pointer"
                   title="Cerrar plano"
                 >
                   <X className="w-5 h-5" />
@@ -1004,44 +1211,73 @@ export default function App() {
               </div>
 
               {/* Main Map View Area with custom scrolling and interactive zoom */}
-              <div className="w-full max-w-6xl bg-neutral-900 border border-white/10 overflow-hidden flex items-center justify-center relative p-4 rounded-none aspect-video">
+              <div 
+                className="w-full max-w-6xl bg-neutral-900 border border-white/10 overflow-hidden flex items-center justify-center relative p-4 rounded-none aspect-video"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <div className="w-full h-full overflow-auto custom-scrollbar flex items-start justify-center">
-                  <div className="relative inline-block transition-transform duration-200" style={{ transform: `scale(${zoomScale})`, transformOrigin: "0 0" }}>
+                  <div 
+                    className="relative inline-block transition-transform duration-200 cursor-grab active:cursor-grabbing" 
+                    style={{ transform: `scale(${zoomScale})`, transformOrigin: "top left" }}
+                  >
                     <img 
-                      src="https://i.imgur.com/C320mbH.jpeg" 
-                      alt="Plano satelital y de colindancias Nativa" 
-                      className="max-w-none h-auto"
+                      src={mapModalData?.src || "https://i.imgur.com/C320mbH.jpeg"} 
+                      alt="Plano interactivo Nativa" 
+                      className="max-w-none h-auto select-none"
                       style={{ width: "100%", maxHeight: "80vh" }}
                       referrerPolicy="no-referrer"
                     />
                   </div>
                 </div>
 
-                {/* Floating controls */}
-                <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-black/85 backdrop-blur-md border border-white/10 p-2 rounded-none text-white shadow-2xl z-10 font-sans text-xs select-none">
+                {/* Floating zoom controls */}
+                <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-black/85 backdrop-blur-md border border-white/10 p-2 rounded-none text-white shadow-2xl z-10 font-sans text-xs select-none flex-wrap">
                   <button 
-                    onClick={() => setZoomScale(prev => Math.max(1, prev - 0.25))}
+                    onClick={() => setZoomScale(prev => Math.max(0.75, prev - 0.25))}
                     className="p-2 hover:bg-white/10 transition-colors cursor-pointer w-8 h-8 flex items-center justify-center font-bold"
-                    title="Reducir Zoom"
+                    title="Alejar Zoom"
                   >
-                    -
+                    <ZoomOut className="w-4 h-4" />
                   </button>
-                  <span className="px-2 font-mono tabular-nums font-semibold tracking-wider">
+
+                  <span className="px-2 font-mono tabular-nums font-semibold tracking-wider text-gold min-w-[45px] text-center">
                     {Math.round(zoomScale * 100)}%
                   </span>
+
                   <button 
-                    onClick={() => setZoomScale(prev => Math.min(3, prev + 0.25))}
+                    onClick={() => setZoomScale(prev => Math.min(3.5, prev + 0.25))}
                     className="p-2 hover:bg-white/10 transition-colors cursor-pointer w-8 h-8 flex items-center justify-center font-bold"
-                    title="Aumentar Zoom"
+                    title="Acercar Zoom"
                   >
-                    +
+                    <ZoomIn className="w-4 h-4" />
                   </button>
+
+                  <div className="w-[1px] h-4 bg-white/20 mx-1 hidden sm:block" />
+
+                  {/* Quick Scale Presets */}
+                  <div className="hidden sm:flex items-center gap-1">
+                    {[1, 1.5, 2, 2.5, 3].map((scale) => (
+                      <button
+                        key={scale}
+                        onClick={() => setZoomScale(scale)}
+                        className={`px-2 py-1 text-[10px] font-mono font-bold transition-all cursor-pointer ${
+                          zoomScale === scale ? "bg-gold text-forest" : "bg-white/10 hover:bg-white/20 text-white/80"
+                        }`}
+                      >
+                        {scale * 100}%
+                      </button>
+                    ))}
+                  </div>
+
                   <div className="w-[1px] h-4 bg-white/20 mx-1" />
+
                   <button 
                     onClick={() => setZoomScale(1)}
-                    className="px-3 py-1 bg-white/10 hover:bg-white/20 text-[10px] uppercase font-bold tracking-wider transition-colors cursor-pointer"
+                    className="px-3 py-1 bg-white/10 hover:bg-white/20 text-[10px] uppercase font-bold tracking-wider transition-colors cursor-pointer flex items-center gap-1 text-gold"
+                    title="Restablecer a 100%"
                   >
-                    {language === "en" ? "Reset (100%)" : "Restablecer (100%)"}
+                    <RotateCcw className="w-3 h-3" />
+                    <span className="hidden sm:inline">{language === "en" ? "Reset" : "Restablecer"}</span>
                   </button>
                 </div>
 
@@ -1056,6 +1292,41 @@ export default function App() {
               <div className="mt-4 text-center text-xs text-neutral-400 max-w-2xl px-4">
                 <p>{t.mapLightboxFooter}</p>
               </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Gallery Image High-Res Lightbox */}
+        <AnimatePresence>
+          {galleryLightboxImg && (
+            <motion.div 
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setGalleryLightboxImg(null)}
+            >
+              <button 
+                onClick={() => setGalleryLightboxImg(null)}
+                className="absolute top-6 right-6 z-10 bg-white/10 hover:bg-gold hover:text-forest text-white p-3 rounded-full transition-all border border-white/20 cursor-pointer"
+                aria-label="Cerrar imagen"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <motion.div 
+                className="relative max-w-5xl max-h-[90vh] overflow-hidden border border-white/10 shadow-2xl rounded-none p-2 bg-forest/40"
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.9 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img 
+                  src={galleryLightboxImg} 
+                  alt="Vista ampliada galería Nativa" 
+                  className="max-w-full max-h-[82vh] object-contain mx-auto"
+                  referrerPolicy="no-referrer"
+                />
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

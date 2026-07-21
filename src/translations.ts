@@ -31,7 +31,7 @@ export const getAmenitiesList = (lang: "en" | "es"): Amenity[] => [
   {
     id: "yoga",
     name: lang === "en" ? "Yoga & Wellness Sanctuary" : "Yoga & Wellness Sanctuary",
-    category: lang === "en" ? "Wellness" : "Bienestar",
+    category: lang === "en" ? "Wellness" : "Plenitud",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAthHk5xCxfhT8AaUKfYIDLAyB2dvJ9A2wztUlibzBTNMBrLQe2UwitgbOrZgulaMyBLrCYDGyk4bJDcuIrjUg_59OsdQG2xCLRYMTK6g6_EEC9wWnFAkvPM5SmIBZkBXAkbbs78VF3IyY220dozcNo8hIH2-2_wC_p-W4Ma7u_2MqlDtmUlzmx_uVez06sE8TjErBAkF1QJCUtRpwumnJe5PIc9HMuX4dE4Mzqay14Qp38jK7lEXs-ha4n7B1FxRucqmtDaiVY3YkV",
     description: lang === "en"
       ? "A majestic elevated deck of exotic wood nestled under the forest canopy. Designed to receive the sunrise filtering through the giant branches of sacred ceiba trees, ideal for daily introspection and stretching."
@@ -41,7 +41,7 @@ export const getAmenitiesList = (lang: "en" | "es"): Amenity[] => [
     id: "cenotes",
     name: lang === "en" ? "Cenote" : "Cenote",
     category: lang === "en" ? "Nature" : "Naturaleza",
-    image: "https://i.imgur.com/G7KVVfg.jpeg",
+    image: "https://i.imgur.com/aA1ad2v.jpeg",
     description: lang === "en"
       ? "Exclusive access to a pristine virgin cenote within the development. A subterranean jewel of turquoise waters where you can swim in deep meditation, connecting with the millenary aquifer heart of the peninsula."
       : "Acceso exclusivo a un majestuoso cenote virgen dentro del desarrollo. Una joya subterránea de aguas turquesas donde se puede nadar en profunda meditación, conectando con el corazón acuífero milenario de la península."
@@ -49,7 +49,7 @@ export const getAmenitiesList = (lang: "en" | "es"): Amenity[] => [
   {
     id: "temazcal",
     name: lang === "en" ? "Temazcal Ritual" : "Temazcal Ritual",
-    category: lang === "en" ? "Wellness" : "Bienestar",
+    category: lang === "en" ? "Wellness" : "Plenitud",
     image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80",
     description: lang === "en"
       ? "Pre-Hispanic inspired dome structure guided by local ceremonial masters. A mystical and detoxifying sensory experience under the steam of volcanic stones infused with wild healing herbs."
